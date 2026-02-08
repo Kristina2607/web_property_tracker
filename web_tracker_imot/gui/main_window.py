@@ -10,6 +10,7 @@ from web_tracker_imot.strorage.storage_json import JsonStorage
 from web_tracker_imot.strorage.storage_csv import CsvStorage
 
 from web_tracker_imot.services.tracker_service import TrackResult, TrackerService
+from web_tracker_imot.services.notifier_service import EmailNotifier, EmailConfig
 from web_tracker_imot.services.extractor import extract_value
 
 import matplotlib.pyplot as plt
@@ -22,8 +23,18 @@ class MainWindow(tk.Tk):
         self.title("Web Tracker")
         self.geometry("980x520")
 
+        cfg = EmailConfig(
+        smtp_host="smtp.gmail.com",
+        smtp_port=587,
+        username="",
+        password="",
+        from_addr="",
+        to_addr="",
+        dry_run=True)
+        notifier = EmailNotifier(cfg)
+
         self._queue: Queue[TrackResult]=Queue()
-        self._tracker=TrackerService(self._queue, extractor=extract_value)
+        self._tracker=TrackerService(self._queue, extractor=extract_value, notifier=notifier)
 
         self._storage=JsonStorage("data/tracked_items.json")
         self._csv = CsvStorage("data/tracked_items.csv")

@@ -2,14 +2,15 @@ import threading
 import time
 from dataclasses import dataclass
 from queue import Queue
-from typing import Callable
+from typing import Callable, Optional
 from web_tracker_imot.models.tracked_imot import TrackedItem
+from web_tracker_imot.services.notifier_service import EmailNotifier
 
 @dataclass
 class TrackResult:
     item_id:str
     is_valid:bool
-    value:int
+    value:str
     timestamp:float
     error:str|None=None
     changed: bool=False
@@ -17,9 +18,10 @@ class TrackResult:
 Extractor=Callable[[TrackedItem], str]
 
 class TrackerService:
-    def __init__(self, out_queue: Queue[TrackResult], extractor:Extractor):
+    def __init__(self, out_queue: Queue[TrackResult], extractor:Extractor, notifier: Optional[EmailNotifier] = None,):
         self._out_queue=out_queue
         self._extractor=extractor
+        self._notifier=notifier
 
         self._stop_event=threading.Event()
         self._force_refresh=threading.Event()
@@ -27,7 +29,7 @@ class TrackerService:
         self._thread:threading.Thread|None=None
 
         self._items_lock=threading.Lock()
-        self._items_by_id: dict[str, TrackedItem]=[]
+        self._items_by_id: dict[str, TrackedItem]={}
 
         self._last_values: dict[str,str]={}
         self._next_run_time: dict[str, float]={}
@@ -116,6 +118,17 @@ class TrackerService:
             old=self._last_values.get(item.id)
             changed=(old is not None) and (old!=value)
             self._last_values[item.id] = value
+
+            if changed and item.email_notify and self._notifier is not None:
+                try:
+                    self._notifier.notify_changed(
+                        title=f"{item.site}",
+                        url=item.url,
+                        old_value=old or "",
+                        new_value=value,
+                    )
+                except Exception:
+                    pass
 
             self._out_queue.put(
                 TrackResult(item_id=item.id, is_valid=True, 
