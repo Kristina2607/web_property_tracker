@@ -111,10 +111,22 @@ class MainWindow(tk.Tk):
 
     def _upsert_item(self, item:TrackedItem) -> None:
         is_edit=item.id in self._item_by_id
+        old_item = self._item_by_id.get(item.id)
 
         self._item_by_id[item.id]=item
         self._items=list(self._item_by_id.values())
 
+        if is_edit and old_item is not None:
+            changed_identity = (
+                old_item.url != item.url
+                or old_item.site != item.site
+                or old_item.criterion_type != item.criterion_type
+                or old_item.criterion_value != item.criterion_value
+            )
+            if changed_identity:
+                self._history.pop(item.id, None)
+                self._last_error.pop(item.id, None)
+        
         if is_edit:
             current=list(self.tree.item(item.id, "values"))
             current[0]=item.site
