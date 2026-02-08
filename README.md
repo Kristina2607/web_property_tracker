@@ -27,7 +27,7 @@
 Поддържани типове:
 
 #### CSS selector
-Пример: .
+Пример: .cena
 
 #### Keyword
 Пример: €
@@ -35,11 +35,11 @@
 #### Presets
 Позволяват извличане без да се знаят CSS селектори:
 
-preset:price
-preset:location
-preset:area
-preset:psm
-preset:title
+- preset:price
+- preset:location
+- preset:area
+- preset:psm
+- preset:title
 
 ## Автоматично събиране на данни
 
