@@ -1,0 +1,9 @@
+requests
+beautifulsoup4
+matplotlib
+
+[dev]
+pytest
+pytest-cov
+mypy
+pylint

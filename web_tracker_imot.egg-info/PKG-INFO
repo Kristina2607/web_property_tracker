@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: web-tracker-imot
+Version: 0.1.0
+Summary: Desktop web tracker for monitoring real estate listings
+Author-email: Your Name <your@email.com>
+Requires-Python: >= 3.10
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: beautifulsoup4
+Requires-Dist: matplotlib
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Requires-Dist: pylint; extra == "dev"
