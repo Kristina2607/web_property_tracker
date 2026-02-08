@@ -85,7 +85,8 @@ class AddTrackedItem(tk.Toplevel):
         btns.grid(row=7, column=0, columnspan=2, sticky="e", pady=(10, 0))
 
         ttk.Button(btns, text="Cancel", command=self.destroy).grid(row=0, column=0, padx=5)
-        ttk.Button(btns, text="Add", command=self._submit).grid(row=0, column=1)
+        self._primary_btn = ttk.Button(btns, text="Add", command=self._submit)
+        self._primary_btn.grid(row=0, column=1)
 
         self._refresh_presets()
 

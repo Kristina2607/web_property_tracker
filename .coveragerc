@@ -1,0 +1,10 @@
+[run]
+branch = True
+source = web_tracker_imot
+
+[report]
+show_missing = True
+skip_covered = True
+omit =
+    web_tracker_imot/demo.py
+    web_tracker_imot/main.py

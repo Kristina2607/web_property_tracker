@@ -11,7 +11,7 @@ class EditTrackedItem(AddTrackedItem):
 
         self.var_site.set(existing_item.site)
         self.var_url.set(existing_item.url)
-        self.var_crit_type.set(existing_item.criterion_type)
+        self.var_crit_type.set(existing_item.criterion_type.value)
         self.var_crit_value.set(existing_item.criterion_value)
         self.var_interval.set(str(existing_item.check_interval_sec))
         self.var_email.set(bool(existing_item.email_notify))
