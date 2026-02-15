@@ -27,7 +27,6 @@ class DummySMTP:
 
 
 def test_email_notifier_dry_run_does_not_send(monkeypatch) -> None:
-    # ако е dry_run, SMTP не трябва да се вика
     def fail_smtp(*args, **kwargs):
         raise AssertionError("SMTP should not be called in dry_run mode")
 
@@ -51,7 +50,6 @@ def test_email_notifier_sends_when_enabled(monkeypatch) -> None:
     dummy = DummySMTP("smtp.example.com", 587)
 
     def smtp_factory(host: str, port: int, timeout: int = 15):
-        # връщаме същия dummy обект за да проверим какво е пратено
         return dummy
 
     monkeypatch.setattr("web_tracker_imot.services.notifier_service.smtplib.SMTP", smtp_factory)
