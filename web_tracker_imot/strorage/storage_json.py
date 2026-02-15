@@ -31,7 +31,7 @@ class JsonStorage:
         payload=[]
         for it in items:
             d=asdict(it)
-            d["criterion_type"]=it.criteria_type.value
+            d["criterion_type"]=it.criterion_type.value
             payload.append(d)
         
         self._path.parent.mkdir(parents=True, exist_ok=True)

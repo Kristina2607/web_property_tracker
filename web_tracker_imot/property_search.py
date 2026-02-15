@@ -25,7 +25,7 @@ def search_properties(search_url:str, base_url:str, link_selector:str, limit=20)
         if full_url not in links:
             links.append(full_url)
 
-        if (len(links)>limit):
+        if len(links)>=limit:
             break
 
     return links

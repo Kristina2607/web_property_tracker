@@ -23,18 +23,17 @@ class CsvStorage:
                 ]
             )
             writer.writeheader()
-            for it in items:
-                writer.writerow(
-                    {
-                        "id": it.id,
-                        "site":it.site,
-                        "url":it.url,
-                        "criterion_type":it.criterion_type.value,
-                        "criterion_value":it.criterion_value,
-                        "check_interval_sec":it.check_interval_sec,
-                        "email_notify": int(it.email_notify)
-                    }
-                )
+            for i, it in enumerate(items, start=1):
+                writer.writerow({
+                    "row_num": i,
+                    "id": it.id,
+                    "site": it.site,
+                    "url": it.url,
+                    "criterion_type": it.criterion_type.value,
+                    "criterion_value": it.criterion_value,
+                    "check_interval_sec": it.check_interval_sec,
+                    "email_notify": int(it.email_notify),
+                })
     
     def import_items(self)->list[TrackedItem]:
         if not self._path.exists():

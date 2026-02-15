@@ -19,7 +19,7 @@ class EmailNotifier:
     def __init__(self, config: EmailConfig) -> None:
         self._cfg = config
 
-    def notify_changed(self, *, title: str, url: str, old_value: str, new_value: str) -> None:
+    def notify_changed(self, title: str, url: str, old_value: str, new_value: str) -> None:
         subject = f"[WebTracker] Changed: {title}"
         body = (
             f"Tracked page changed:\n\n"
@@ -30,7 +30,7 @@ class EmailNotifier:
         )
         self._send_email(subject=subject, body=body)
 
-    def _send_email(self, *, subject: str, body: str) -> None:
+    def _send_email(self, subject: str, body: str) -> None:
         if self._cfg.dry_run:
             print("[EmailNotifier] DRY RUN - would send email:")
             print("Subject:", subject)

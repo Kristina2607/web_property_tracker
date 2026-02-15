@@ -15,7 +15,7 @@ from web_tracker_imot.services.extractor import extract_value
 
 import matplotlib.pyplot as plt
 import re
-
+import os
 
 class MainWindow(tk.Tk):
     def __init__(self) -> None:
@@ -31,10 +31,10 @@ class MainWindow(tk.Tk):
         from_addr="",
         to_addr="",
         dry_run=True)
-        notifier = EmailNotifier(cfg)
+        self._notifier = EmailNotifier(cfg)
 
         self._queue: Queue[TrackResult]=Queue()
-        self._tracker=TrackerService(self._queue, extractor=extract_value, notifier=notifier)
+        self._tracker=TrackerService(self._queue, extractor=extract_value, notifier=self._notifier)
 
         self._storage=JsonStorage("data/tracked_items.json")
         self._csv = CsvStorage("data/tracked_items.csv")
@@ -302,9 +302,23 @@ class MainWindow(tk.Tk):
         if result.item_id not in self._item_by_id:
             return
         
+        item = self._item_by_id[result.item_id]
         current = list(self.tree.item(result.item_id, "values"))
 
         if result.is_valid:
+            old_value = str(current[4]).strip()
+            if result.changed and item.email_notify:
+                try:
+                    title = f"{item.site}"
+                    self._notifier.notify_changed(
+                    title=title,
+                    url=item.url,
+                    old_value=old_value if old_value else "(empty)",
+                    new_value=str(result.value),
+                    )
+                except Exception as e:
+                    print("[EmailNotifier] ERROR:", e)
+
             current[4] = result.value
             current[5] = "Changed" if result.changed else "OK"
             current[6] = ""  

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "fdd260dd-80f2-42f4-a77a-af098538deaa",
+    "site": "imot.bg",
+    "url": "https://www.imot.bg/obiava-1d176794339061528-prodava-chetiristaen-apartament-grad-sofiya-manastirski-livadi-bul-balgariya",
+    "criterion_type": "css",
+    "criterion_value": ".cena",
+    "check_interval_sec": 60,
+    "email_notify": false
+  },
+  {
+    "id": "d8fc73dd-8ae2-42bd-af13-d89e6eda2b08",
+    "site": "imot.bg",
+    "url": "https://www.imot.bg/obiava-1j176032672582558-prodava-kashta-grad-sofiya-s-negovan",
+    "criterion_type": "css",
+    "criterion_value": "preset:area",
+    "check_interval_sec": 60,
+    "email_notify": false
+  }
+]
